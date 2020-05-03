@@ -17,11 +17,16 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        python -m pip install -qq --upgrade pip
+        python -m pip install -qq --upgrade pip flit
         pip install '.[test]'
     - name: Test and print
       run: |
+        python -m testver src/ --dryrun
+    - name: Build test package
+      if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
+      run: |
         python -m testver src/
+    - name: Buld real package
     # - name: Lint with flake8
     #   run: flake8 src/
     # - name: Check black formatting
