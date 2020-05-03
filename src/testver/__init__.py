@@ -1,4 +1,4 @@
-"Temporarily change the version of a package for testing purposes."
+"Programmatically edit python package versions for testing."
 import ast
 import sys
 import astunparse
