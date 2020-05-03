@@ -22,20 +22,37 @@ jobs:
     - name: Test and print
       run: |
         python -m testver src/ --dryrun
-    - name: Build test package
-      if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
+  build:
+    needs:
+      test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
+    - name: Install dependencies
       run: |
-        python -m testver src/
-    - name: Buld real package
-    # - name: Lint with flake8
-    #   run: flake8 src/
-    # - name: Check black formatting
-    #   run: black --check src/
-    # - name: Mypy test analysis
-    #   run: mypy --ignore-missing-imports src/
-    # - name: Test with pytest
-    #   run: python -m pytest --cov=src/
-    # - name: Update coveralls
-    #   run: python -m coveralls
-    #   env:
-    #     COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+        python -m pip install -qq --upgrade pip flit
+        pip install .
+    - name: Assign temporary version number
+      if: github.event_name == 'push' && !startsWith(github.event.ref, 'refs/tags')
+      run: |
+        python -m testver src/testver/__init__.py
+        git add src/testver/__init__.py
+    - name: Build package
+      run: flit build
+    - name: Publish to Test PYPI
+      if: github.event_name == 'push' && !startsWith(github.event.ref, 'refs/tags')
+      run: flit publish
+      env:
+        FLIT_INDEX_URL: https://test.pypi.org/legacy/
+        FLIT_USERNAME: __token__
+        FLIT_PASSWORD: ${{ secrets.pypi_token }}
+    - name: Publish to real PYPI
+      if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
+      run: flit publish
+      env:
+        FLIT_USERNAME: __token__
+        FLIT_PASSWORD: ${{ secrets.pypi_token }}
