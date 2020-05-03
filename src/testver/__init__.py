@@ -1,5 +1,6 @@
 "Temporarily change the version of a package for testing purposes."
 import ast
+import sys
 import astunparse
 from pathlib import Path
 
@@ -13,8 +14,14 @@ def modver(filepath: Path, suffix: str = "test"):
         if isinstance(node, ast.Assign) and (
             node.targets[0].id == "__version__"
         ):
-            new_value = node.value.value + f"-{suffix}"
-            node.value.value = node.value.value + f"-{suffix}"
+            if isinstance(node.value, ast.Constant):
+                # python >=3.8 doesn't have ast.Str
+                # new_value = node.value.value + f"-{suffix}"
+                node.value.value += f"-{suffix}"
+                new_value = node.value.value
+            elif isinstance(node.value, ast.Str):
+                node.value.s += f"-{suffix}"
+                new_value = node.value.s
             break
     else:
         raise ValueError(
