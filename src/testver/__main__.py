@@ -31,15 +31,19 @@ if __name__ == "__main__":
 
     suffix = args.suffix or sha
 
-    files_to_try = sorted(
-        [file_ for file_ in sorted(filepath.glob("**/__init__.py"))]
-        + [file_ for file_ in sorted(filepath.glob("**/__version__.py"))]
-    )
-
     if filepath.is_dir():
+        files_to_try = sorted(
+            [file_ for file_ in sorted(filepath.glob("**/__init__.py"))]
+            + [file_ for file_ in sorted(filepath.glob("**/__version__.py"))]
+        )
         for file_ in files_to_try:
             if "__version__" in file_.read_text():
                 mod_text, new_ver = modver(file_, suffix=suffix)
                 if not args.dryrun:
                     file_.write_text(mod_text)
                 print(f"Changed __version__ in file {file_} to {new_ver}")
+    else:
+        mod_text, new_ver = modver(filepath, suffix=suffix)
+        if not args.dryrun:
+            filepath.write_text(mod_text)
+        print(f"Changed __version__ in file {filepath} to {new_ver}")
