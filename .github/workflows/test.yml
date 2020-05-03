@@ -49,7 +49,7 @@ jobs:
       env:
         FLIT_INDEX_URL: https://test.pypi.org/legacy/
         FLIT_USERNAME: __token__
-        FLIT_PASSWORD: ${{ secrets.pypi_token }}
+        FLIT_PASSWORD: ${{ secrets.test_pypi_token }}
     - name: Publish to real PYPI
       if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
       run: flit publish
