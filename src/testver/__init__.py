@@ -17,10 +17,10 @@ def modver(filepath: Path, suffix: str = "test"):
             if isinstance(node.value, ast.Constant):
                 # python >=3.8 doesn't have ast.Str
                 # new_value = node.value.value + f"-{suffix}"
-                node.value.value += f"-{suffix}"
+                node.value.value += f"+{suffix}"
                 new_value = node.value.value
             elif isinstance(node.value, ast.Str):
-                node.value.s += f"-{suffix}"
+                node.value.s += f"+{suffix}"
                 new_value = node.value.s
             break
     else:
