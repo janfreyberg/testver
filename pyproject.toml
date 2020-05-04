@@ -6,6 +6,7 @@ build-backend = "flit_core.buildapi"
 module = "testver"
 author = "Jan Freyberg"
 author-email = "jan.freyberg@gmail.com"
+description-file = "README.md"
 home-page = "https://www.github.com/janfreyberg/testver"
 classifiers = ["License :: OSI Approved :: MIT License"]
 requires = ["astunparse"]
