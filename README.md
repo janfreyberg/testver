@@ -1,5 +1,7 @@
 # testver
 
+[![PyPI version](https://badge.fury.io/py/testver.svg)](https://badge.fury.io/py/testver)
+
 *Programmatically edit python package versions for testing.*
 
 When publishing a python package from a continuous integration system, it can
