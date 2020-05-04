@@ -22,8 +22,7 @@ def _get_sha():
     return os.getenv("GITHUB_SHA") or os.getenv("TRAVIS_COMMIT") or "test"
 
 
-if __name__ == "__main__":
-
+def main():
     sha = _get_sha()
 
     args = parser.parse_args()
@@ -47,3 +46,8 @@ if __name__ == "__main__":
         if not args.dryrun:
             filepath.write_text(mod_text)
         print(f"Changed __version__ in file {filepath} to {new_ver}")
+
+
+if __name__ == "__main__":
+
+    main()
