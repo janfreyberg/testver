@@ -38,12 +38,12 @@ if __name__ == "__main__":
         )
         for file_ in files_to_try:
             if "__version__" in file_.read_text():
-                mod_text, new_ver = modver(file_, suffix=suffix)
+                mod_text, new_ver = modver(file_)
                 if not args.dryrun:
                     file_.write_text(mod_text)
                 print(f"Changed __version__ in file {file_} to {new_ver}")
     else:
-        mod_text, new_ver = modver(filepath, suffix=suffix)
+        mod_text, new_ver = modver(filepath)
         if not args.dryrun:
             filepath.write_text(mod_text)
         print(f"Changed __version__ in file {filepath} to {new_ver}")
