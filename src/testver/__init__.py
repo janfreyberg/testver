@@ -1,11 +1,10 @@
 "Programmatically edit python package versions for testing."
 import ast
-import sys
 import datetime
 import astunparse
 from pathlib import Path
 
-__version__ = "0.3.0"
+__version__ = "0.3.1"
 
 
 def modver(filepath: Path, varname="__version__", mode="string"):
